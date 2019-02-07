@@ -19,7 +19,11 @@ public class QueenBoard{
     String s = "";
     for (int[] row: board) {
       for(int x: row){
-        s += x;
+        if(x > -1){
+            s+= "_";
+        } else{
+          s += "Q";
+        }
         s += " ";
       }
       s+= "\n";
