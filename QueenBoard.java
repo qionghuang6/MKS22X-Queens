@@ -6,31 +6,49 @@ public class QueenBoard{
   }
 
   private boolean addQueen(int r, int c){
+      if(board[r][c] > 0 || board[r][c] == -1){
+        return false;
+      }
       for(int x: board[r]){
-        if(x > 0 || x == -1){
-          return false;
-        }
+        x++;
       }
+
       for (int[] row: board) {
-        if(row[c] > 0 || row[c] == -1){
-          return false;
-        }
+        row[c] += 1;
       }
+
       for(int row = r, col = c; col >= 0 && row >= 0; col--, row--){
-        if(board[row][col] > 0 || board[row][col] == -1){
-          return false;
-        }
+        board[row][col] += 1;
+      }
+      for(int row = r, col = c; col < board[0].length && row >= 0; col++, row--){
+        board[row][col] += 1;
       }
       for(int row = r, col = c; col < board[0].length && row < board.length; col++, row++){
-        if(board[row][col] > 0 || board[row][col] == -1){
-          return false;
-        }
+        board[row][col] += 1;
+      }
+      for(int row = r, col = c; col >= 0 && col < board.length; col--, row++){
+        board[row][col] += 1;
       }
       board[r][c] = -1;
       return true;
   }
 
   private boolean removeQueen(int r, int c){
+      if(board[r][c] != -1){
+        return false;
+      }
+      for(int x: board[r]){
+        x -= 1;
+      }
+      for (int[] row: board) {
+        row[c] -= 1;
+      }
+      for(int row = r, col = c; col >= 0 && row >= 0; col--, row--){
+        board[row][col] -= 1;
+      }
+      for(int row = r, col = c; col < board[0].length && row < board.length; col++, row++){
+        board[row][col] -= 1;
+      }
       board[r][c] = 0;
       return true;
   }
@@ -50,9 +68,31 @@ public class QueenBoard{
     }
     return s;
   }
+  public String toStringDebug(){
+    String s = "";
+    for (int[] row: board) {
+      for (int x : row ) {
+        s += x;
+        s += "  ";
+      }
+      s += "\n";
+    }
+    return s;
+  }
   public static void main(String[] args) {
     QueenBoard t = new QueenBoard(10);
     System.out.println(t);
     t.addQueen(1,1);
+      System.out.println(t);
+    System.out.println(t.toStringDebug());
+    t.addQueen(1,2);
+    t.addQueen(2,2);
+    t.addQueen(2,1);
+    t.addQueen(2,3);
+    System.out.println(t);
+    System.out.println(t.toStringDebug());
+    t.removeQueen(2,3);
+    System.out.println(t.toStringDebug());
+    System.out.println(t);
   }
 }
