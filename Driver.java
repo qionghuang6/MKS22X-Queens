@@ -2,6 +2,7 @@ public class Driver{
   public static void main(String[] args) {
     QueenBoard t = new QueenBoard(10);
     System.out.println(t);
+    /*
     t.addQueen(1,1);
       System.out.println(t);
     System.out.println(t.toStringDebug());
@@ -14,5 +15,7 @@ public class Driver{
     t.removeQueen(2,3);
     System.out.println(t.toStringDebug());
     System.out.println(t);
+    */
+    System.out.println(t.solve());
   }
 }

@@ -6,50 +6,36 @@ public class QueenBoard{
   }
 
   public boolean addQueen(int r, int c){
+    return changeQueen(r,c,1,-1);
+  }
+  public boolean removeQueen(int r, int c){
+    return changeQueen(r,c,-1,0);
+  }
+  public boolean changeQueen(int r, int c, int change, int queen){
       if(board[r][c] > 0 || board[r][c] == -1){
         return false;
       }
       for(int x = 0; x < board.length; x++){
-        board[r][x] ++;
+        board[r][x] += change;
       }
 
       for (int[] row: board) {
-        row[c] += 1;
+        row[c] += change;
       }
 
       for(int row = r, col = c; col >= 0 && row >= 0; col--, row--){
-        board[row][col] += 1;
+        board[row][col] += change;
       }
       for(int row = r, col = c; col < board[0].length && row >= 0; col++, row--){
-        board[row][col] += 1;
+        board[row][col] += change;
       }
       for(int row = r, col = c; col < board[0].length && row < board.length; col++, row++){
-        board[row][col] += 1;
+        board[row][col] += change;
       }
-      for(int row = r, col = c; col >= 0 && col < board.length; col--, row++){
-        board[row][col] += 1;
+      for(int row = r, col = c; col >= 0 && row < board.length; col--, row++){
+        board[row][col] += change;
       }
-      board[r][c] = -1;
-      return true;
-  }
-
-  public  boolean removeQueen(int r, int c){
-      if(board[r][c] != -1){
-        return false;
-      }
-      for(int x = 0; x < board.length; x++){
-        board[r][x] --;
-      }
-      for (int[] row: board) {
-        row[c] -= 1;
-      }
-      for(int row = r, col = c; col >= 0 && row >= 0; col--, row--){
-        board[row][col] -= 1;
-      }
-      for(int row = r, col = c; col < board[0].length && row < board.length; col++, row++){
-        board[row][col] -= 1;
-      }
-      board[r][c] = 0;
+      board[r][c] = queen;
       return true;
   }
 
@@ -80,14 +66,22 @@ public class QueenBoard{
     return s;
   }
   public boolean solve(){
-    return solveHelper(0,0,0) > 0;
+    int sols = solveHelper(0,0,0);
+    for (int[] row :board) {
+      for(int c = 0; c < board.length; c++){
+        row[c] = 0;
+      }
+    }
+    return sols > 0;
   }
   public int solveHelper(int r, int c, int sols){
+    System.out.println(toString());
+    System.out.println(toStringDebug());
     if(c == board.length -1){
       if(board[r][c] == 0){
         sols ++;
       }
-      if(r == boards.length - 1){
+      if(r == board.length - 1){
         return sols;
       }
     }
@@ -102,9 +96,9 @@ public class QueenBoard{
         solveHelper(0,c-1,sols);
       }
       if(r < board.length - 1){
-        solveHelper(r+1, c, sols)
+        solveHelper(r+1, c, sols);
       }
-      return sols;
     }
+    return sols;
   }
 }
