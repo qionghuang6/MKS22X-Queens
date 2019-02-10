@@ -5,12 +5,12 @@ public class QueenBoard{
     board = new int[size][size];
   }
 
-  private boolean addQueen(int r, int c){
+  public boolean addQueen(int r, int c){
       if(board[r][c] > 0 || board[r][c] == -1){
         return false;
       }
-      for(int x: board[r]){
-        x++;
+      for(int x = 0; x < board.length; x++){
+        board[r][x] ++;
       }
 
       for (int[] row: board) {
@@ -33,12 +33,12 @@ public class QueenBoard{
       return true;
   }
 
-  private boolean removeQueen(int r, int c){
+  public  boolean removeQueen(int r, int c){
       if(board[r][c] != -1){
         return false;
       }
-      for(int x: board[r]){
-        x -= 1;
+      for(int x = 0; x < board.length; x++){
+        board[r][x] --;
       }
       for (int[] row: board) {
         row[c] -= 1;
@@ -78,21 +78,5 @@ public class QueenBoard{
       s += "\n";
     }
     return s;
-  }
-  public static void main(String[] args) {
-    QueenBoard t = new QueenBoard(10);
-    System.out.println(t);
-    t.addQueen(1,1);
-      System.out.println(t);
-    System.out.println(t.toStringDebug());
-    t.addQueen(1,2);
-    t.addQueen(2,2);
-    t.addQueen(2,1);
-    t.addQueen(2,3);
-    System.out.println(t);
-    System.out.println(t.toStringDebug());
-    t.removeQueen(2,3);
-    System.out.println(t.toStringDebug());
-    System.out.println(t);
   }
 }
