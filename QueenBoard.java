@@ -79,4 +79,32 @@ public class QueenBoard{
     }
     return s;
   }
+  public boolean solve(){
+    return solveHelper(0,0,0) > 0;
+  }
+  public int solveHelper(int r, int c, int sols){
+    if(c == board.length -1){
+      if(board[r][c] == 0){
+        sols ++;
+      }
+      if(r == boards.length - 1){
+        return sols;
+      }
+    }
+    if(board[r][c] == 0){
+      addQueen(r,c);
+      solveHelper(0,c+1,sols);
+    } else{
+      if(board[r][c] == -1){
+        removeQueen(r,c);
+      }
+      if(r == board.length -1 && c > 0){
+        solveHelper(0,c-1,sols);
+      }
+      if(r < board.length - 1){
+        solveHelper(r+1, c, sols)
+      }
+      return sols;
+    }
+  }
 }
