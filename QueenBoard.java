@@ -102,4 +102,17 @@ public class QueenBoard{
     }
     return 0;
   }
+  private int countSolsR(int col){
+    int sols = 0;
+    if (col >= board.length){
+      sols++;
+    }
+    for(int x = 0; x < board.length; x++){
+      if(addQueen(x,col)){
+        sols += countSolsR(col + 1);
+        removeQueen(x,col);
+      }
+    }
+    return sols;
+  }
 }
