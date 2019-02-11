@@ -1,9 +1,7 @@
 public class QueenBoard{
   private int[][] board;
-  private int[][] solved;
   public QueenBoard(int size){
     board = new int[size][size];
-    solved = new int[size][size];
   }
 
   private boolean addQueen(int r, int c){
@@ -78,16 +76,21 @@ public class QueenBoard{
         }
       }
     }
-    int sols = solveHelper(0,0,0,true);
-    if(sols <= 0){
-      for (int[] row :board) {
-        for(int c = 0; c < board.length; c++){
-          row[c] = 0;
+    return solveR(0);
+  }
+  private boolean solveR(int col){
+    if (col >= board.length){
+      return true;
+    }
+    for(int x = 0; x < board.length; x++){
+      if(addQueen(x,col)){
+        if(solveR(col + 1)){
+          return true;
         }
+        removeQueen(x,col);
       }
     }
-    board = solved;
-    return sols > 0;
+    return false;
   }
   public int countSolutions(){
     for (int[] row: board) {
@@ -97,46 +100,6 @@ public class QueenBoard{
         }
       }
     }
-    int sols = solveHelper(0,0,0,false);
-    board = solved;
-    return sols;
-  }
-  private int solveHelper(int r, int c, int sols, boolean firstSol){
-    if(c == board.length -1){
-      if(board[r][c] == 0){
-        addQueen(r,c);
-        sols ++;
-        for (int x = 0; x< board.length ;x++ ) {
-          for (int y = 0; y < board.length; y++) {
-            solved[x][y] = board[x][y];
-          }
-        }
-        if(firstSol){
-          return sols;
-        }
-        removeQueen(r,c);
-        return solveHelper(0,c-1, sols,firstSol);
-      }
-    }
-    if(board[r][c] == 0){
-      addQueen(r,c);
-      return solveHelper(0,c+1,sols,firstSol);
-    } else{
-      if(board[r][c] == -1){
-        removeQueen(r,c);
-        if(r == board.length-1 && c == 0){
-          r = 0;
-          c = 0;
-          return sols;
-        }
-      }
-      if(r == board.length -1 && c > 0){
-        return solveHelper(0,c-1,sols,firstSol);
-      }
-      if(r < board.length - 1){
-        return solveHelper(r+1, c, sols,firstSol);
-      }
-    }
-    return sols;
+    return 0;
   }
 }
