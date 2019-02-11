@@ -1,8 +1,9 @@
 public class QueenBoard{
   private int[][] board;
-
+  private int[][] solved;
   public QueenBoard(int size){
     board = new int[size][size];
+    solved = new int[size][size];
   }
 
   private boolean addQueen(int r, int c){
@@ -85,15 +86,35 @@ public class QueenBoard{
         }
       }
     }
+    board = solved;
     return sols > 0;
+  }
+  public int countSolutions(){
+    for (int[] row: board) {
+      for (int val : row ) {
+        if(val != 0){
+          throw new IllegalStateException();
+        }
+      }
+    }
+    int sols = solveHelper(0,0,0,false);
+    board = solved;
+    return sols;
   }
   private int solveHelper(int r, int c, int sols, boolean firstSol){
     if(c == board.length -1){
       if(board[r][c] == 0){
+        addQueen(r,c);
         sols ++;
+        for (int x = 0; x< board.length ;x++ ) {
+          for (int y = 0; y < board.length; y++) {
+            solved[x][y] = board[x][y];
+          }
+        }
         if(firstSol){
           return sols;
         }
+        removeQueen(r,c);
         return solveHelper(0,c-1, sols,firstSol);
       }
     }
