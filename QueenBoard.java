@@ -5,13 +5,13 @@ public class QueenBoard{
     board = new int[size][size];
   }
 
-  public boolean addQueen(int r, int c){
+  private boolean addQueen(int r, int c){
     return changeQueen(r,c,1,-1);
   }
-  public boolean removeQueen(int r, int c){
+  private boolean removeQueen(int r, int c){
     return changeQueen(r,c,-1,0);
   }
-  public boolean changeQueen(int r, int c, int change, int queen){
+  private boolean changeQueen(int r, int c, int change, int queen){
       if(board[r][c] > 0 || board[r][c] == queen){
         return false;
       }
@@ -41,16 +41,20 @@ public class QueenBoard{
 
   public String toString(){
     String s = "";
-    for (int[] row: board) {
-      for(int x: row){
-        if(x > -1){
+    for (int a = 0; a < board.length; a++) {
+      for(int x = 0; x < board[a].length; x++){
+        if (board[a][x] > -1){
             s+= "_";
         } else{
           s += "Q";
         }
-        s += " ";
+        if(x < board[a].length -1){
+          s += " ";
+        }
       }
-      s+= "\n";
+      if(a < board.length){
+        s+= "\n";
+      }
     }
     return s;
   }
@@ -74,32 +78,22 @@ public class QueenBoard{
     }
     return sols > 0;
   }
-  public int solveHelper(int r, int c, int sols){
-    System.out.println(toString());
-    System.out.println(toStringDebug());
-    System.out.println(r);
-    System.out.println(c);
+  private int solveHelper(int r, int c, int sols){
     if(c == board.length -1){
       if(board[r][c] == 0){
         sols ++;
-        System.out.println(" NEW SOL");
         return solveHelper(0,c-1, sols);
       }
     }
     if(board[r][c] == 0){
-      System.out.println("added queen" + r + "  " + c);
       addQueen(r,c);
       return solveHelper(0,c+1,sols);
     } else{
       if(board[r][c] == -1){
         removeQueen(r,c);
-        System.out.println("queen removed");
-        System.out.println("row col" + r + " " + c);
         if(r == board.length-1 && c == 0){
-          System.out.println("YEET");
           r = 0;
           c = 0;
-          System.out.println("sols " + sols);
           return sols;
         }
       }
