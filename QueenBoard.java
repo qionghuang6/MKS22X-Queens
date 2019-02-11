@@ -70,24 +70,36 @@ public class QueenBoard{
     return s;
   }
   public boolean solve(){
-    int sols = solveHelper(0,0,0);
-    for (int[] row :board) {
-      for(int c = 0; c < board.length; c++){
-        row[c] = 0;
+    for (int[] row: board) {
+      for (int val : row ) {
+        if(val != 0){
+          throw new IllegalStateException();
+        }
+      }
+    }
+    int sols = solveHelper(0,0,0,true);
+    if(sols <= 0){
+      for (int[] row :board) {
+        for(int c = 0; c < board.length; c++){
+          row[c] = 0;
+        }
       }
     }
     return sols > 0;
   }
-  private int solveHelper(int r, int c, int sols){
+  private int solveHelper(int r, int c, int sols, boolean firstSol){
     if(c == board.length -1){
       if(board[r][c] == 0){
         sols ++;
-        return solveHelper(0,c-1, sols);
+        if(firstSol){
+          return sols;
+        }
+        return solveHelper(0,c-1, sols,firstSol);
       }
     }
     if(board[r][c] == 0){
       addQueen(r,c);
-      return solveHelper(0,c+1,sols);
+      return solveHelper(0,c+1,sols,firstSol);
     } else{
       if(board[r][c] == -1){
         removeQueen(r,c);
@@ -98,10 +110,10 @@ public class QueenBoard{
         }
       }
       if(r == board.length -1 && c > 0){
-        return solveHelper(0,c-1,sols);
+        return solveHelper(0,c-1,sols,firstSol);
       }
       if(r < board.length - 1){
-        return solveHelper(r+1, c, sols);
+        return solveHelper(r+1, c, sols,firstSol);
       }
     }
     return sols;
